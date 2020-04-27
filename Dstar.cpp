@@ -158,7 +158,7 @@ void Dstar::setG(state u, double g) {
  * --------------------------
  * Sets the rhs value for state u
  */
-double Dstar::setRHS(state u, double rhs) {
+void Dstar::setRHS(state u, double rhs) {
 
   makeNewCell(u);
   cellHash[u].rhs = rhs;
@@ -409,19 +409,19 @@ void Dstar::getSucc(state u,list<state> &s) {
   u.x += 1;
   s.push_front(u);
   u.y += 1;
-  s.push_front(u);
+  // s.push_front(u);
   u.x -= 1;
   s.push_front(u);
   u.x -= 1;
-  s.push_front(u);
+  // s.push_front(u);
   u.y -= 1;
   s.push_front(u);
   u.y -= 1;
-  s.push_front(u);
+  // s.push_front(u);
   u.x += 1;
   s.push_front(u);
   u.x += 1;
-  s.push_front(u);
+  // s.push_front(u);
 
 }
 
@@ -441,19 +441,19 @@ void Dstar::getPred(state u,list<state> &s) {
   u.x += 1;
   if (!occupied(u)) s.push_front(u);
   u.y += 1;
-  if (!occupied(u)) s.push_front(u);
+  // if (!occupied(u)) s.push_front(u);
   u.x -= 1;
   if (!occupied(u)) s.push_front(u);
   u.x -= 1;
-  if (!occupied(u)) s.push_front(u);
+  // if (!occupied(u)) s.push_front(u);
   u.y -= 1;
   if (!occupied(u)) s.push_front(u);
   u.y -= 1;
-  if (!occupied(u)) s.push_front(u);
+  // if (!occupied(u)) s.push_front(u);
   u.x += 1;
   if (!occupied(u)) s.push_front(u);
   u.x += 1;
-  if (!occupied(u)) s.push_front(u);
+  // if (!occupied(u)) s.push_front(u);
 
 }
 

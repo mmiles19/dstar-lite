@@ -109,7 +109,7 @@ class Dstar {
   double getG(state u);
   double getRHS(state u);
   void   setG(state u, double g);
-  double setRHS(state u, double rhs);
+  void setRHS(state u, double rhs);
   double eightCondist(state a, state b);
   int    computeShortestPath();
   void   updateVertex(state u);
