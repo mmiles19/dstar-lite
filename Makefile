@@ -1,4 +1,4 @@
-FLAGS=-O2
+FLAGS=-O2 -DBuild_type=Debug
 DEFS= -D USE_OPEN_GL -D MACOS
 
 LIBS= -framework OpenGL -framework GLUT -lm -L/usr/local/lib

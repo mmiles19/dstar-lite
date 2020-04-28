@@ -104,20 +104,23 @@ void keyPressed(unsigned char key, int x, int y)
 
 }
 
-void mouseFunc(int button, int state, int x, int y) {
+void mouseFunc(int button, int kstate, int x, int y) {
 
   y = hh -y+scale/2;
   x += scale/2;
 
+  y /= scale;
+  x /= scale;
+
   mbutton = button;
 
-  if ((mstate = state) == GLUT_DOWN) {
+  if ((mstate = kstate) == GLUT_DOWN) {
     if (button == GLUT_LEFT_BUTTON) {
-      dstar->updateCell(x/scale, y/scale, -1);
+      dstar->updateCell(x, y, -1);
     } else if (button == GLUT_RIGHT_BUTTON) {
-      dstar->updateStart(x/scale, y/scale);
+      dstar->updateStart(x, y);
     } else if (button == GLUT_MIDDLE_BUTTON) {
-      dstar->updateGoal(x/scale, y/scale);
+      dstar->updateGoal(x, y);
     }
   }
 }
@@ -160,8 +163,14 @@ int main(int argc, char **argv) {
 
   InitGL(800, 600);
 
-  dstar = new Dstar();
-  dstar->init(40,50,140, 90);
+  dstar = new Dstar(2);
+  state start(dstar->size());
+  state  goal(dstar->size());
+  start.set(0,40);
+  start.set(1,50);
+  goal.set(0,140);
+  goal.set(1,90);
+  dstar->init(start, goal);
 
   printf("----------------------------------\n");
   printf("Dstar Visualizer\n");
