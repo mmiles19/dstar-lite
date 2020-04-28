@@ -18,6 +18,12 @@ using namespace __gnu_cxx;
 
 class state {
  public:
+  struct dimCfg{
+    int min;
+    int max;
+    bool wrap;
+  };
+
   vector<int> dims;
   // int x;
   // int y;
@@ -28,14 +34,15 @@ class state {
     dims.resize(size);
   }
 
-  state operator = (const state &s2) {
-    dims.clear();
-    dims.resize(s2.size());
-    for (uint i=0; i<size(); i++){
-      set(i, s2.get(i));
-    }
-    return *this;
-  }
+  // state operator = (const state &s2) {
+  //   dims.clear();
+  //   dims.resize(s2.size());
+  //   for (uint i=0; i<size(); i++){
+  //     set(i, s2.get(i));
+  //   }
+  //   k = s2.k;
+  //   return *this;
+  // }
 
   bool operator == (const state &s2) const {
     // return ((x == s2.x) && (y == s2.y));
@@ -171,6 +178,17 @@ class Dstar {
   bool   occupied(state u);
   bool   isValid(state u);
   float  keyHashCode(state u);
+
+  void getNeighbors(state u, list<state> &s);
+
+  vector<int> mins;
+  vector<int> maxs;
+  vector<bool> wraps;
+  
+public:
+  void setMin(int i, int v) { mins[i] = v; }
+  void setMax(int i, int v) { maxs[i] = v; }
+  void setWrap(int i, bool v) { wraps[i] = v; }
 };
 
 #endif

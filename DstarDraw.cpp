@@ -164,11 +164,19 @@ int main(int argc, char **argv) {
   InitGL(800, 600);
 
   dstar = new Dstar(2);
+
+  dstar->setMin(0, 0);
+  dstar->setMax(0, 100);
+  dstar->setWrap(0, true);
+  dstar->setMin(1, 0);
+  dstar->setMax(1, 100);
+  dstar->setWrap(1, false);
+
   state start(dstar->size());
   state  goal(dstar->size());
-  start.set(0,40);
-  start.set(1,50);
-  goal.set(0,140);
+  start.set(0,10);
+  start.set(1,10);
+  goal.set(0,90);
   goal.set(1,90);
   dstar->init(start, goal);
 
