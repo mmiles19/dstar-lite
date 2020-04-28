@@ -102,11 +102,12 @@ class state_hash {
  public:
   size_t operator()(const state &s) const {
     // return s.x + 34245*s.y;
-    size_t hash;
-    for (uint i=0; i<s.size(); i++) {
-      hash += pow(1000,i)*s.get(i);
-    }
-    return hash;
+    // size_t hash;
+    // for (uint i=0; i<s.size(); i++) {
+    //   hash += pow(1000,i)*s.get(i);
+    // }
+    // return hash;
+    return s.get(0) + 34245*s.get(1);
   }
 };
 

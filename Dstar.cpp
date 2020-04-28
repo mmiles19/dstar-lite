@@ -217,7 +217,6 @@ int Dstar::computeShortestPath() {
 
 
     state u(size());
-    printf("size %d\n",size());
 
     bool test = (getRHS(s_start) != getG(s_start));
 
@@ -397,7 +396,7 @@ void Dstar::updateCell(int x, int y, double val) {
 }
 void Dstar::updateCell(state s, double val) {
 
-  printf("Updating cell %d %d with %f\n", s.get(0), s.get(1), val);
+  // printf("Updating cell %d %d with %f\n", s.get(0), s.get(1), val);
   state u = s;
 
   if ((u == s_start) || (u == s_goal)) return;
@@ -414,7 +413,7 @@ void Dstar::updateCell(state s, double val) {
  * 8-way graph this list contains all of a cells neighbours. Unless
  * the cell is occupied in which case it has no successors.
  */
-void Dstar::getSucc(state u,list<state> &s) {
+void Dstar::getSucc(state u, list<state> &s) {
 
   s.clear();
   u.k.first  = -1;
@@ -422,21 +421,33 @@ void Dstar::getSucc(state u,list<state> &s) {
 
   if (occupied(u)) return;
 
-  for (uint i=0; i<u.size(); i++)
-  {
-    {
-      state tmp(size());
-      tmp = u;
-      tmp.dims[i] += 1;
-      s.push_front(tmp);
-    }
-    {
-      state tmp(size());
-      tmp = u;
-      tmp.dims[i] -= 1;
-      s.push_front(tmp);
-    }
-  }
+  // for (uint i=0; i<u.size(); i++)
+  // {
+  //   {
+  //     state tmp(size());
+  //     tmp = u;
+  //     tmp.dims[i] += 1;
+  //     s.push_front(tmp);
+  //   }
+  //   {
+  //     state tmp(size());
+  //     tmp = u;
+  //     tmp.dims[i] -= 1;
+  //     s.push_front(tmp);
+  //   }
+  // }
+
+  u.dims[0] += 1;
+  s.push_front(u);
+  u.dims[1] += 1;
+  u.dims[0] -= 1;
+  s.push_front(u);
+  u.dims[0] -= 1;
+  u.dims[1] -= 1;
+  s.push_front(u);
+  u.dims[1] -= 1;
+  u.dims[0] += 1;
+  s.push_front(u);
 
   // u.x += 1;
   // s.push_front(u);
@@ -470,21 +481,33 @@ void Dstar::getPred(state u,list<state> &s) {
   u.k.first  = -1;
   u.k.second = -1;
 
-  for (uint i=0; i<u.size(); i++)
-  {
-    {
-      state tmp(size());
-      tmp = u;
-      tmp.dims[i] += 1;
-      if (!occupied(tmp)) s.push_front(tmp);
-    }
-    {
-      state tmp(size());
-      tmp = u;
-      tmp.dims[i] -= 1;
-      if (!occupied(tmp)) s.push_front(tmp);
-    }
-  }
+  // for (uint i=0; i<u.size(); i++)
+  // {
+  //   {
+  //     state tmp(size());
+  //     tmp = u;
+  //     tmp.dims[i] += 1;
+  //     if (!occupied(tmp)) s.push_front(tmp);
+  //   }
+  //   {
+  //     state tmp(size());
+  //     tmp = u;
+  //     tmp.dims[i] -= 1;
+  //     if (!occupied(tmp)) s.push_front(tmp);
+  //   }
+  // }
+
+  u.dims[0] += 1;
+  if (!occupied(u)) s.push_front(u);
+  u.dims[1] += 1;
+  u.dims[0] += 1;
+  if (!occupied(u)) s.push_front(u);
+  u.dims[0] -= 1;
+  u.dims[1] -= 1;
+  if (!occupied(u)) s.push_front(u);
+  u.dims[1] -= 1;
+  u.dims[0] += 1; 
+  if (!occupied(u)) s.push_front(u);
 
   // u.x += 1;
   // if (!occupied(u)) s.push_front(u);
@@ -650,9 +673,10 @@ bool Dstar::replan() {
   path.clear();
 
   int res = computeShortestPath();
+    printf("res %d\n",res);
   // printf("res: %d ols: %d ohs: %d tk: [%f %f] sk: [%f %f] sgr: (%f,%f)\n",res,openList.size(),openHash.size(),openList.top().k.first,openList.top().k.second, s_start.k.first, s_start.k.second,getRHS(s_start),getG(s_start));
   if (res < 0) {
-    fprintf(stderr, "NO PATH TO GOAL\n");
+    fprintf(stderr, "NO PATH TO GOAL: cant compute\n");
     return false;
   }
   list<state> n;
@@ -661,7 +685,7 @@ bool Dstar::replan() {
   state cur = s_start;
 
   if (isinf(getG(s_start))) {
-    fprintf(stderr, "NO PATH TO GOAL\n");
+    fprintf(stderr, "NO PATH TO GOAL: inf cost at start\n");
     return false;
   }
 
@@ -671,7 +695,7 @@ bool Dstar::replan() {
     getSucc(cur, n);
 
     if (n.empty()) {
-      fprintf(stderr, "NO PATH TO GOAL\n");
+      fprintf(stderr, "NO PATH TO GOAL: no neighbors\n");
       return false;
     }
 
