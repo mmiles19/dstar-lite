@@ -25,11 +25,13 @@ class state {
   };
 
   vector<int> dims;
-  // int x;
-  // int y;
   pair<double,double> k;
 
   state(uint size=2){
+    reset(size);
+  }
+
+  void reset(uint size=2){
     dims.clear();
     dims.resize(size);
   }

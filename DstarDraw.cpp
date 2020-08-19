@@ -98,7 +98,14 @@ void keyPressed(unsigned char key, int x, int y)
     break;
   case 'c':
   case 'C':
-    dstar->init(40,50,140, 90);
+    //dstar->init(40,50,140, 90);
+    //state start(dstar->size());
+    //state  goal(dstar->size());
+    //start.set(0,20);
+    //start.set(1,50);
+    //goal.set(0,80);
+    //goal.set(1,80);
+    dstar->init(20, 50, 80, 80);
     break;
   }
 
@@ -174,11 +181,12 @@ int main(int argc, char **argv) {
 
   state start(dstar->size());
   state  goal(dstar->size());
-  start.set(0,10);
-  start.set(1,10);
-  goal.set(0,90);
-  goal.set(1,90);
+  start.set(0,20);
+  start.set(1,50);
+  goal.set(0,80);
+  goal.set(1,80);
   dstar->init(start, goal);
+  // dstar->init(20, 50, 80, 80);
 
   printf("----------------------------------\n");
   printf("Dstar Visualizer\n");

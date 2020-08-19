@@ -89,10 +89,9 @@ void Dstar::init(int sX, int sY, int gX, int gY) {
   stmp.set(1, sY);
   gtmp.set(0, gX);
   gtmp.set(1, gY);
-  init(s_start, s_goal);
+  init(stmp, gtmp);
 }
 void Dstar::init(state s, state g) {
-
   cellHash.clear();
   path.clear();
   openHash.clear();
@@ -115,7 +114,6 @@ void Dstar::init(state s, state g) {
   s_start = calculateKey(s_start);
 
   s_last = s_start;
-
 }
 
 /* void Dstar::makeNewCell(state u)
@@ -422,7 +420,7 @@ void Dstar::getNeighbors(state u, list<state> &s) {
       tmp = u;
       tmp.dims[i] += 1;
       if (tmp.dims[i] > maxs[i]) {
-        if (wraps[i])
+        if (wraps[i]) 
           tmp.dims[i] = mins[i];
         else
           break;
@@ -434,15 +432,139 @@ void Dstar::getNeighbors(state u, list<state> &s) {
       tmp = u;
       tmp.dims[i] -= 1;
       if (tmp.dims[i] < mins[i]) {
-        if (wraps[i])
+        if (wraps[i]) 
           tmp.dims[i] = maxs[i];
-        else
+        else 
           break;
       }
       s.push_front(tmp);
     }
   }
 }
+
+// void Dstar::getNeighbors(state u, list<state> &s) {
+//   printf("**** adding neighbors ******\n");
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += -1;
+//     tmp.dims[1] += -1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += -1;
+//     tmp.dims[1] += 0;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += -1;
+//     tmp.dims[1] += 1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += 0;
+//     tmp.dims[1] += -1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += 0;
+//     tmp.dims[1] += 1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += 1;
+//     tmp.dims[1] += -1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += 1;
+//     tmp.dims[1] += 0;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+//   {
+//     state tmp(size());
+//     tmp = u;
+//     tmp.dims[0] += 1;
+//     tmp.dims[1] += 1;
+//     for(uint i=0; i<size(); i++){
+//       if (tmp.dims[i] > maxs[i]) {
+//         if (wraps[i]) {
+//           tmp.dims[i] = mins[i];
+//         }
+//       }
+//     }
+//     printf("adding neighbor %d %d\n", tmp.get(0), tmp.get(1));
+//     s.push_front(tmp);
+//   }
+// }
 
 /* void Dstar::getSucc(state u,list<state> &s)
  * --------------------------
@@ -458,53 +580,12 @@ void Dstar::getSucc(state u, list<state> &s) {
 
   if (occupied(u)) return;
 
-  // for (uint i=0; i<u.size(); i++)
-  // {
-  //   {
-  //     state tmp(size());
-  //     tmp = u;
-  //     tmp.dims[i] += 1;
-  //     s.push_front(tmp);
-  //   }
-  //   {
-  //     state tmp(size());
-  //     tmp = u;
-  //     tmp.dims[i] -= 1;
-  //     s.push_front(tmp);
-  //   }
-  // }
-
-  // u.dims[0] += 1;
-  // s.push_front(u);
-  // u.dims[1] += 1;
-  // u.dims[0] -= 1;
-  // s.push_front(u);
-  // u.dims[0] -= 1;
-  // u.dims[1] -= 1;
-  // s.push_front(u);
-  // u.dims[1] -= 1;
-  // u.dims[0] += 1;
-  // s.push_front(u);
-
   getNeighbors(u,s);
 
-  // u.x += 1;
-  // s.push_front(u);
-  // u.y += 1;
-  // // s.push_front(u);
-  // u.x -= 1;
-  // s.push_front(u);
-  // u.x -= 1;
-  // // s.push_front(u);
-  // u.y -= 1;
-  // s.push_front(u);
-  // u.y -= 1;
-  // // s.push_front(u);
-  // u.x += 1;
-  // s.push_front(u);
-  // u.x += 1;
-  // // s.push_front(u);
-
+  // printf("* got neighbors to %d %d\n", u.get(0), u.get(1));
+  // for (list<state>::iterator s_iter=s.begin(); s_iter!=s.end(); s_iter++){
+  //   printf("%d %d\n", s_iter->get(0), s_iter->get(1));
+  // }
 }
 
 /* void Dstar::getPred(state u,list<state> &s)
@@ -723,7 +804,7 @@ bool Dstar::replan() {
   path.clear();
 
   int res = computeShortestPath();
-  // printf("res: %d ols: %d ohs: %d tk: [%f %f] sk: [%f %f] sgr: (%f,%f)\n",res,openList.size(),openHash.size(),openList.top().k.first,openList.top().k.second, s_start.k.first, s_start.k.second,getRHS(s_start),getG(s_start));
+  printf("start (%d, %d), goal (%d, %d), res: %d ols: %d ohs: %d tk: [f f] sk: [%f %f] sgr: (%f,%f)\n", s_start.get(0), s_start.get(1), s_goal.get(0), s_goal.get(1), res, openList.size(), openHash.size(), /*openList.top().k.first,openList.top().k.second,*/ s_start.k.first, s_start.k.second, getRHS(s_start), getG(s_start));
   if (res < 0) {
     fprintf(stderr, "NO PATH TO GOAL: cant compute\n");
     return false;
@@ -742,6 +823,11 @@ bool Dstar::replan() {
 
     path.push_back(cur);
     getSucc(cur, n);
+
+    // printf("** got neighbors to %d %d\n", cur.get(0), cur.get(1));
+    // for (list<state>::iterator s_iter=n.begin(); s_iter!=n.end(); s_iter++){
+    //   printf("%d %d\n", s_iter->get(0), s_iter->get(1));
+    // }
 
     if (n.empty()) {
       fprintf(stderr, "NO PATH TO GOAL: no neighbors\n");
@@ -785,10 +871,10 @@ void Dstar::draw() {
   ds_ch::iterator iter;
   ds_oh::iterator iter1;
   state t(size());
-
   list<state>::iterator iter2;
 
   glBegin(GL_QUADS);
+
   for(iter=cellHash.begin(); iter != cellHash.end(); iter++) {
     if (iter->second.cost == 1) glColor3f(0,1,0);
     else if (iter->second.cost < 0 ) glColor3f(1,0,0);
@@ -796,32 +882,41 @@ void Dstar::draw() {
     drawCell(iter->first,0.45);
   }
 
-  glColor3f(1,1,0);
-  drawCell(s_start,0.45);
-  glColor3f(1,0,1);
-  drawCell(s_goal,0.45);
-
-
-  // printf("s x %d\n",s_start.get(0));
-  // printf("s y %d\n",s_start.get(1));
-  // printf("g x %d\n",s_goal.get(0));
-  // printf("g y %d\n",s_goal.get(1));
-
   for(iter1=openHash.begin(); iter1 != openHash.end(); iter1++) {
     glColor3f(0.4,0,0.8);
     drawCell(iter1->first, 0.2);
   }
 
+  // draw path
+  glColor3f(0.6, 0.1, 0.4);
+  for(iter2=path.begin(); iter2!=path.end(); iter2++){
+    drawCell(*iter2, 0.45);
+  }
+
+  // draw start / goal
+  glColor3f(1,1,0);
+  drawCell(s_start,0.5);
+  glColor3f(1,0,1);
+  drawCell(s_goal,0.5);
 
   glEnd();
 
-  glLineWidth(4);
-  glBegin(GL_LINE_STRIP);
-  glColor3f(0.6, 0.1, 0.4);
+  // draw path
+  // glLineWidth(4);
+  // glBegin(GL_LINE_STRIP);
+  // glColor3f(0.6, 0.1, 0.4);
+  // for(iter2=path.begin(); iter2 != path.end(); iter2++) {
+  //   glVertex3f(iter2->get(0), iter2->get(1), 0.2);
+  // }
+  // glEnd();
 
-  for(iter2=path.begin(); iter2 != path.end(); iter2++) {
-    glVertex3f(iter2->get(0), iter2->get(1), 0.2);
-  }
+  // draw border
+  glBegin(GL_LINE_STRIP);
+  glColor3f(1.0, 1.0, 1.0);
+  glVertex3f(mins[0], mins[1], 0.2);
+  glVertex3f(maxs[0], mins[1], 0.2);
+  glVertex3f(maxs[0], maxs[1], 0.2);
+  glVertex3f(mins[0], maxs[1], 0.2);
   glEnd();
 
 }
